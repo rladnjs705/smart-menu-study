@@ -16,6 +16,7 @@ const typeDefs = gql`
         itemImage: String
         itemCategoryId: ID
         createdAt: Date
+        updatedAt: Date
         category: Category
     }
 
