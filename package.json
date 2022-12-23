@@ -1,0 +1,14 @@
+{
+  "name": "smart-menu-study",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.17.9",
+    "apollo-server": "^3.11.1",
+    "apollo-server-express": "^3.11.1",
+    "graphql": "^16.6.0",
+    "meteor-node-stubs": "^1.2.1"
+  }
+}
