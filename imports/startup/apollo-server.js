@@ -8,15 +8,20 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-co
 import { execute, subscribe } from 'graphql';
 import { SubscriptionServer } from "subscriptions-transport-ws";
 
+//사용자인증추가
+import { getUser } from "meteor/apollo";
+
 //서버설정(리졸버,스키마)
 import resolverItem from '/imports/api/item/resolvers';
 import typeDefsItem from '/imports/api/item/schemas';
 import resolverOrder from '/imports/api/order/resolvers';
 import typeDefsOrder from '/imports/api/order/schemas';
+import resolverAuth from "/imports/api/auth/resolvers";
+import typeDefsAuth from "/imports/api/auth/schemas";
 
 (async function(){
-  const typeDefs = [typeDefsItem, typeDefsOrder];
-  const resolvers = [resolverItem, resolverOrder];
+  const resolvers = [resolverItem, resolverOrder, resolverAuth];
+  const typeDefs = [typeDefsItem, typeDefsOrder, typeDefsAuth];
 
   const schema = makeExecutableSchema({
     typeDefs,
@@ -43,7 +48,10 @@ import typeDefsOrder from '/imports/api/order/schemas';
   const server = new ApolloServer({
     playground: true,
     schema,
-    context:'',
+    context: async({req}) => ({
+      user: await getUser(req.headers.authorization),
+      userToken: req.headers.authorization,
+    }),
     plugins: [
       ApolloServerPluginLandingPageGraphQLPlayground(),
 
