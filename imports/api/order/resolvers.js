@@ -1,5 +1,11 @@
 import { getCurrentDate } from '../../utils/formatDate';
 import Orders from './collections';
+import { PubSub, withFilter } from 'graphql-subscriptions'; // PubSub:발행추가 withFilter : 사용자 인증추가
+import { ORDER_ADDED, ADMIN } from '/imports/utils/constans'; //ADMIN: 사용자 인증추가
+import { getUser } from "meteor/apollo";  //사용자 인증추가
+
+const pubsub = new PubSub;
+
 
 const queries = {
     // '_': 부모로부터 전달받은 값
@@ -33,6 +39,10 @@ const mutations = {
 
         try {
             const result = await Orders.insert(orderValues);
+            //발행 추가
+            orderValues._id = result;
+            await pubsub.publish(ORDER_ADDED, {orderAdded: orderValues});
+
             return result;
         } catch (error) {
             throw `Order Add Error: ${error}`;
@@ -54,12 +64,30 @@ const mutations = {
         } catch (error) {
             throw `CheckOrder Update Error: ${error}`;
         }
+    },
+}
+
+//발행 추가
+const subscriptions = {
+    orderAdded: {
+        // subscribe: () => {
+        //     return pubsub.asyncIterator(ORDER_ADDED);
+        // }
+        subscribe: withFilter(
+            () => pubsub.asyncIterator(ORDER_ADDED),
+            async (payload, variables) => {
+                const getUserRole = await getUser(variables.authToken);
+                const checkRole = getUserRole.profile.role === ADMIN;
+                return checkRole;
+            }
+        )
     }
 }
 
 const resolvers = {
     Query: queries,
     Mutation: mutations,
+    Subscription: subscriptions,
 }
 
 export default resolvers;

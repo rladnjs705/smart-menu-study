@@ -42,7 +42,7 @@ const typeDefs = gql`
         categories: [Category]
         item(_id: ID): Item
         items(pageNumber: Int, search: String, itemCategoryId: ID): [Item]
-        itemsPageCount(search: String, itemCategoryId: ID): Int
+        itemPageCount(search: String, itemCategoryId: ID): Int
     }
 `
 

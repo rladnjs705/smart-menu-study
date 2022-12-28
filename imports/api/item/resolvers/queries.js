@@ -1,4 +1,4 @@
-import { Categories, Items} from './collections';
+import { Categories, Items} from '../collections';
 import { ALL } from '/imports/utils/constans';
 
 const pageSize = 15;
@@ -65,7 +65,7 @@ const queries = {
         }
     },
 
-    async itemsPageCount(_, args, context, info) {
+    async itemPageCount(_, args, context, info) {
 
         let search = '';
         let setFilters = {};

@@ -36,6 +36,10 @@ const typeDefs = gql`
     extend type Query {
         orders(limit: Int): [Order]
     }
+
+    type Subscription {
+        orderAdded(authToken: String): Order,
+    }
 `
 
 export default typeDefs;
