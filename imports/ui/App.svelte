@@ -1,7 +1,8 @@
 <script>
-    import { setClient } from "svelte-apollo";
-    import { apolloClient } from "./apollo/apollo-client";
+    // import { setClient } from "svelte-apollo";
+    // import { apolloClient } from "./apollo/apollo-client";
 
-    //apolloClient 서버와 통신관련된 설정
-    setClient(apolloClient);
+    // setClient(apolloClient);
 </script>
+
+<h1>hello</h1>
